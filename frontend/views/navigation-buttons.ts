@@ -27,7 +27,7 @@ export class NavigationButtons extends LitElement {
         <vaadin-button id="new" @click="${this.new}">
           <iron-icon icon="vaadin:plus"></iron-icon>
           New
-        </vaadin-button>        
+        </vaadin-button>
         <div id="total" style="flex-grow: 1"></div>
         <vaadin-button id="cancel" @click="${this.cancel}">
           <iron-icon icon="vaadin:close-small"></iron-icon>
@@ -91,12 +91,12 @@ export class NavigationButtons extends LitElement {
       return;
     }
     const item = await this.binder.submitTo(this.submit);
-    this.go(parseInt(item.idString));
+    this.go(item.id);
   }
 
   private async new() {
     this.go();
-  }  
+  }
 
   private cancel() {
     this.binder.reset();

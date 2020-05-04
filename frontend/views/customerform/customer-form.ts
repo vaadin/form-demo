@@ -24,7 +24,7 @@ export class CustomerForm extends LitElement {
     return html`
       <div class="meta-row" id="metaContainer">
         <h2 id="title">Customer</h2>
-        <span class="dim">Customer #${this.binder.model.idString}</span>
+        <span class="dim">Customer #${this.binder.model.id}</span>
       </div>
 
       <vaadin-form-layout id="form1">
@@ -43,14 +43,14 @@ export class CustomerForm extends LitElement {
         ></vaadin-text-field>
       </vaadin-form-layout>
 
-      <navigation-buttons 
+      <navigation-buttons
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveCustomer}"
         .load="${viewEndpoint.getCustomer}"
       ></navigation-buttons>
     `;
   }
-  
+
   public onBeforeLeave(_location: any, commands: any) {
     return this.binder.isDirty && commands.prevent();
   }

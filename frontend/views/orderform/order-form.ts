@@ -67,12 +67,12 @@ export class OrderForm extends LitElement {
     return html`
       <div class="meta-row">
         <h2>New order</h2>
-        <span class="dim">Order #${this.binder.model.idString}</span>
+        <span class="dim">Order #${this.binder.model.id}</span>
       </div>
 
       <p>Submitting: ${this.binder.isSubmitting}</p>
 
-      <navigation-buttons 
+      <navigation-buttons
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveOrder}"
         .load="${viewEndpoint.getOrder}"
@@ -110,7 +110,7 @@ export class OrderForm extends LitElement {
            ...="${field(this.binder.model.customer.phoneNumber)}">
             <iron-icon slot="prefix" icon="vaadin:phone"></iron-icon>
           </vaadin-text-field>
-          
+
           <vaadin-text-area
            label="Additional Details"
            colspan="3"
@@ -164,11 +164,11 @@ export class OrderForm extends LitElement {
                 </vaadin-button>
               </div>`
             )}
-            
+
             <vaadin-button @click="${() => appendItem(this.binder.model.products)}">
              <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add product
             </vaadin-button>
-            
+
             <h5 class="flex-row">
               <span class="flex-1">Total</span>
               <span>${Array.from(this.binder.value.products)
@@ -179,7 +179,7 @@ export class OrderForm extends LitElement {
                <iron-icon slot="prefix" icon="vaadin:trash"></iron-icon>
               </vaadin-button>
             </h5>
-          </div>          
+          </div>
         </vaadin-form-layout>
       </vaadin-form-layout>
     `;

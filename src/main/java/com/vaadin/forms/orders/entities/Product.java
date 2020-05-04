@@ -45,7 +45,7 @@ public class Product extends IdEntity {
     @Override
     public String toString() {
         return "Product [description=" + description + ", price=" + price
-                + ", quantity=" + quantity + ", getIdString()=" + getIdString()
+                + ", quantity=" + quantity + ", id=" + getId()
                 + "]";
     }
 

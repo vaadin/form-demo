@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -76,7 +75,7 @@ public class OrdersEndpoint {
 
     private <T extends IdEntity> T saveItem(List<T> items, T item) {
         if (item.getId() != null) {
-            T old = getItem(items, item.getIdString()).orElse(null);
+            T old = getItem(items, item.getId()).orElse(null);
             int idx = items.indexOf(old);
             items.set(idx, item);
             return item;
@@ -88,11 +87,15 @@ public class OrdersEndpoint {
 
     private  <T extends IdEntity> long computeNextId(List<T> items) {
         T max = items.stream().max(Comparator.comparing(IdEntity::getId)).orElse(null);
-        return max == null ? 1 : (max.getId() + 1); 
+        return max == null ? 1 : (max.getId() + 1);
     }
 
     private <T extends IdEntity> Optional<T> getItem(List<T> items, String id) {
-        return items.stream().filter(item -> item.getIdString().equals(id)).findFirst();
+        return id != null && id.matches("\\d+") ? getItem(items, Long.parseLong(id)) : Optional.empty();
+    }
+
+    private <T extends IdEntity> Optional<T> getItem(List<T> items, Long id) {
+        return items.stream().filter(item -> item.getId().equals(id)).findFirst();
     }
 
 

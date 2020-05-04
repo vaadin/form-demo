@@ -1,13 +1,8 @@
 package com.vaadin.forms.orders.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public abstract class IdEntity {
 
-    @JsonIgnore
     private Long id;
-    private String idString;
 
     public IdEntity(Long id) {
         this.id = id;
@@ -19,24 +14,6 @@ public abstract class IdEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    /**
-     * When transmitting ID to the client we need a data type that is supported
-     * (long is not supported in JavaScript)
-     *
-     * @return String representation if {@link #id}
-     */
-    @JsonProperty // Does not work, need the class property above
-    public String getIdString() {
-        return id == null ? null : id.toString();
-    }
-
-    public void setIdString(String idString) {
-        if (id == null && idString != null && !idString.isEmpty()) {
-            id = Long.parseLong(idString);
-        }
     }
 
     @Override

@@ -26,7 +26,7 @@ export class ProductForm extends LitElement {
     return html`
       <div class="meta-row" id="metaContainer">
         <h2 id="title">Product</h2>
-        <span class="dim">Product #${this.binder.model.idString}</span>
+        <span class="dim">Product #${this.binder.model.id}</span>
       </div>
 
       <vaadin-form-layout id="form1" .responsiveSteps="${[{minWidth: "0", columns: 3}]}">
@@ -44,7 +44,7 @@ export class ProductForm extends LitElement {
           ...="${field(this.binder.model.quantity)}">
       </vaadin-form-layout>
 
-      <navigation-buttons 
+      <navigation-buttons
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveProduct}"
         .load="${viewEndpoint.getProduct}"
