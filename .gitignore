@@ -1,0 +1,19 @@
+/target/
+.idea/
+.settings
+.project
+.classpath
+.vscode
+
+*.iml
+.DS_Store
+
+# The following files are generated/updated by vaadin-maven-plugin
+node_modules/
+frontend/generated/
+
+webpack*
+package*
+pnpm*
+tsconfig.json
+types.d.ts

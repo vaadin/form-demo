@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    padding: 1rem;
+}
+
+navigation-buttons {
+    display: block;
+    margin-top: 2em;
+}
+
+.flex-row {
+    display: flex;
+    align-items: baseline;
+}
+
+.flex-row > *:not(:first-child) {
+    margin-left: var(--lumo-space-s);
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-0 {
+    flex: 0;
+}
