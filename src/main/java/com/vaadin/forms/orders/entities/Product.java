@@ -1,6 +1,7 @@
 package com.vaadin.forms.orders.entities;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 public class Product extends IdEntity {
@@ -8,14 +9,13 @@ public class Product extends IdEntity {
 
     @NotBlank @Size(min = 3, max = 50)
     private String description;
+    @Positive
     private Integer price;
-    private Integer quantity;
 
-    public Product(Long id, String description, Integer price, Integer quantity) {
+    public Product(Long id, String description, Integer price) {
         super(id);
         this.description = description;
         this.price = price;
-        this.quantity = quantity;
     }
 
     public String getDescription() {
@@ -34,19 +34,10 @@ public class Product extends IdEntity {
         this.price = price;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
     @Override
     public String toString() {
-        return "Product [description=" + description + ", price=" + price
-                + ", quantity=" + quantity + ", id=" + getId()
-                + "]";
+        return "Product [" + super.toString() + ", description=" + description
+                + ", price=" + price + "]";
     }
 
 }

@@ -39,4 +39,9 @@ public abstract class IdEntity {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "id="+ getId();
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.vaadin.forms.orders.entities.Customer;
 import com.vaadin.forms.orders.entities.Location;
 import com.vaadin.forms.orders.entities.Order;
+import com.vaadin.forms.orders.entities.OrderLine;
 import com.vaadin.forms.orders.entities.Product;
 
 @Service
@@ -25,59 +26,60 @@ public class BackendService {
     private static List<Customer> customers;
     private static List<Product> products;
     private static List<Location> locations;
-
+    public static long idLine = 0L;
     static {
         long id = 0L;
         Random r = new Random();
+        //, r.nextInt(4) + 1
         products = new ArrayList<>(Arrays.asList(
-                new Product(id++, "chipotle peppers", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cabbage", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "lemon juice", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "capers", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "mackerel", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "garlic powder", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "buttermilk", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "powdered sugar", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "arugula", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "red pepper flakes", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "coconut oil", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "sherry", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "vegemite", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "moo shu wrappers", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "rhubarb", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "Tabasco sauce", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "chestnuts", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cream of tartar", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "coffee", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "rose water", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "bean sprouts", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "beef", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cilantro", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "veal", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "crabs", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "croutons", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "Irish cream liqueur", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "flax seed", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "okra", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cauliflower", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "halibut", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "vermouth", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "black-eyed peas", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "Canadian bacon", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "graham crackers", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "chile peppers", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "sushi", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "wasabi", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "allspice", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "honey", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "raw sugar", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "condensed milk", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cod", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "Havarti cheese", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "dried leeks", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "cornstarch", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "parsnips", r.nextInt(39) + 10, r.nextInt(4) + 1),
-                new Product(id++, "baking soda", r.nextInt(39) + 10, r.nextInt(4) + 1)));
+                new Product(id++, "chipotle peppers", r.nextInt(39) + 10),
+                new Product(id++, "cabbage", r.nextInt(39) + 10),
+                new Product(id++, "lemon juice", r.nextInt(39) + 10),
+                new Product(id++, "capers", r.nextInt(39) + 10),
+                new Product(id++, "mackerel", r.nextInt(39) + 10),
+                new Product(id++, "garlic powder", r.nextInt(39) + 10),
+                new Product(id++, "buttermilk", r.nextInt(39) + 10),
+                new Product(id++, "powdered sugar", r.nextInt(39) + 10),
+                new Product(id++, "arugula", r.nextInt(39) + 10),
+                new Product(id++, "red pepper flakes", r.nextInt(39) + 10),
+                new Product(id++, "coconut oil", r.nextInt(39) + 10),
+                new Product(id++, "sherry", r.nextInt(39) + 10),
+                new Product(id++, "vegemite", r.nextInt(39) + 10),
+                new Product(id++, "moo shu wrappers", r.nextInt(39) + 10),
+                new Product(id++, "rhubarb", r.nextInt(39) + 10),
+                new Product(id++, "Tabasco sauce", r.nextInt(39) + 10),
+                new Product(id++, "chestnuts", r.nextInt(39) + 10),
+                new Product(id++, "cream of tartar", r.nextInt(39) + 10),
+                new Product(id++, "coffee", r.nextInt(39) + 10),
+                new Product(id++, "rose water", r.nextInt(39) + 10),
+                new Product(id++, "bean sprouts", r.nextInt(39) + 10),
+                new Product(id++, "beef", r.nextInt(39) + 10),
+                new Product(id++, "cilantro", r.nextInt(39) + 10),
+                new Product(id++, "veal", r.nextInt(39) + 10),
+                new Product(id++, "crabs", r.nextInt(39) + 10),
+                new Product(id++, "croutons", r.nextInt(39) + 10),
+                new Product(id++, "Irish cream liqueur", r.nextInt(39) + 10),
+                new Product(id++, "flax seed", r.nextInt(39) + 10),
+                new Product(id++, "okra", r.nextInt(39) + 10),
+                new Product(id++, "cauliflower", r.nextInt(39) + 10),
+                new Product(id++, "halibut", r.nextInt(39) + 10),
+                new Product(id++, "vermouth", r.nextInt(39) + 10),
+                new Product(id++, "black-eyed peas", r.nextInt(39) + 10),
+                new Product(id++, "Canadian bacon", r.nextInt(39) + 10),
+                new Product(id++, "graham crackers", r.nextInt(39) + 10),
+                new Product(id++, "chile peppers", r.nextInt(39) + 10),
+                new Product(id++, "sushi", r.nextInt(39) + 10),
+                new Product(id++, "wasabi", r.nextInt(39) + 10),
+                new Product(id++, "allspice", r.nextInt(39) + 10),
+                new Product(id++, "honey", r.nextInt(39) + 10),
+                new Product(id++, "raw sugar", r.nextInt(39) + 10),
+                new Product(id++, "condensed milk", r.nextInt(39) + 10),
+                new Product(id++, "cod", r.nextInt(39) + 10),
+                new Product(id++, "Havarti cheese", r.nextInt(39) + 10),
+                new Product(id++, "dried leeks", r.nextInt(39) + 10),
+                new Product(id++, "cornstarch", r.nextInt(39) + 10),
+                new Product(id++, "parsnips", r.nextInt(39) + 10),
+                new Product(id++, "baking soda", r.nextInt(39) + 10)));
 
         id = 0L;
         locations = new ArrayList<>(Arrays.asList(
@@ -111,17 +113,17 @@ public class BackendService {
                 new Customer(id++, "Isidoro Glave", "iglavek@tamu.edu", "+35 012 23 45"),
                 new Customer(id++, "Cchaddie Spatarul", "cspatarull@sun.com", "+35 012 23 45")));
 
-        Supplier<List<Product>> s = () -> r
-                .ints(r.nextInt(2) + 1, 0, products.size())
-                .mapToObj(i -> products.get(i)).collect(Collectors.toList());
 
+        Supplier<List<OrderLine>> s = () -> r
+                .ints(r.nextInt(3) + 1, 0, products.size())
+                .mapToObj(i -> new OrderLine(idLine++, products.get(i), r.nextInt(4) + 1, "")).collect(Collectors.toList());
 
         id = 0L;
         orders = new ArrayList<>();
         for (Customer c : customers) {
             orders.add(new Order(id++, c,
                     locations.get(r.nextInt(locations.size())), LocalDate.now(),
-                    LocalTime.now().truncatedTo(ChronoUnit.HOURS), s.get()));
+                    LocalTime.of(r.nextInt(16) + 6, 0, 0), s.get()));
         }
     }
 

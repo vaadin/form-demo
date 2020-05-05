@@ -40,8 +40,6 @@ export class ProductForm extends LitElement {
         >
           <div slot="suffix">€</div>
         </vaadin-integer-field>
-        <input type="hidden" value="0"
-          ...="${field(this.binder.model.quantity)}">
       </vaadin-form-layout>
 
       <navigation-buttons

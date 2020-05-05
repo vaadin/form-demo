@@ -53,8 +53,8 @@ public class Customer extends IdEntity {
 
     @Override
     public String toString() {
-        return "Customer [fullName=" + fullName + ", phoneNumber=" + phoneNumber
-                + ", email=" + email + ", id=" + getId() + "]";
+        return "Customer [" + super.toString() + " + fullName=" + fullName
+                + ", phoneNumber=" + phoneNumber + ", email=" + email + "]";
     }
 
 }

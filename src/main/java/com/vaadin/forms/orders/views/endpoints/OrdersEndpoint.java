@@ -36,7 +36,11 @@ public class OrdersEndpoint {
     }
 
     public Order saveOrder(Order item) {
-        item.getProducts().forEach(prod -> saveProduct(prod));
+        item.getLines().forEach(line -> {
+            if (line.getId() == null) {
+                line.setId(BackendService.idLine++);
+            }
+        });
         return saveItem(service.getOrders(), item);
     }
 

@@ -19,7 +19,8 @@ import {field, modelRepeat, Binder, setValue, removeItem, appendItem} from '@vaa
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import Product from '../../generated/com/vaadin/forms/orders/entities/Product';
-import ProductModel from '../../generated/com/vaadin/forms/orders/entities/ProductModel';
+import OrderLine from '../../generated/com/vaadin/forms/orders/entities/OrderLine';
+import OrderLineModel from '../../generated/com/vaadin/forms/orders/entities/OrderLineModel';
 import OrderModel from '../../generated/com/vaadin/forms/orders/entities/OrderModel';
 
 import { CSSModule } from '../../css-utils';
@@ -59,8 +60,6 @@ export class OrderForm extends LitElement {
     OrderForm.productList = await viewEndpoint.getProducts();
     OrderForm.timesList = await viewEndpoint.getTimes();
     this.requestUpdate();
-    // this.pickupLocation.items = await viewEndpoint.getLocations();
-    // this.dueTime.items = await viewEndpoint.getTimes();
   }
 
   render() {
@@ -119,8 +118,8 @@ export class OrderForm extends LitElement {
 
           <div colspan="3">
             <h3>Products</h3>
-            ${modelRepeat(this.binder.model.products,
-              (productModel, product, index) => html`
+            ${modelRepeat(this.binder.model.lines,
+              (lineModel, line, index) => html`
               <div class="flex-row">
                 <vaadin-combo-box class="flex-1"
                  .label="${index === 0 ? 'Product' : undefined}"
@@ -128,8 +127,8 @@ export class OrderForm extends LitElement {
                  item-label-path="description"
                  item-value-path="description"
                  ...="${
-                  field(productModel.description, (comboBox: any) => {
-                    setValue(productModel.price, (comboBox.selectedItem as Product).price);
+                  field(lineModel.product.description, (comboBox: any) => {
+                    setValue(lineModel.product.price, (comboBox.selectedItem as Product).price);
                   })
                  }"
                  ></vaadin-combo-box>
@@ -139,13 +138,13 @@ export class OrderForm extends LitElement {
                  max="15"
                  has-controls
                  prevent-invalid-input
-                 ...="${field(productModel.quantity)}"
+                 ...="${field(lineModel.quantity)}"
                  ></vaadin-integer-field>
                 <vaadin-number-field
                   .label="${index === 0 ? 'Unit cost' : undefined}"
                   readonly
                   theme="align-right"
-                  .value="${productModel.price.valueOf()}"
+                  .value="${lineModel.product.price.valueOf()}"
                 >
                   <div slot="suffix">€</div>
                 </vaadin-number-field>
@@ -153,26 +152,26 @@ export class OrderForm extends LitElement {
                   .label="${index === 0 ? 'Total cost' : undefined}"
                   readonly
                   theme="align-right"
-                  .value="${product.price * product.quantity}"
+                  .value="${line.product.price * line.quantity}"
                 >
                   <div slot="suffix">€</div>
                 </vaadin-number-field>
                 <vaadin-button theme="icon tertiary error" aria-label="remove product"
-                 @click=${() => removeItem<Product, ProductModel<Product>>(productModel)}
+                 @click=${() => removeItem<OrderLine, OrderLineModel<OrderLine>>(lineModel)}
                 >
                  <iron-icon slot="prefix" icon="vaadin:trash"></iron-icon>
                 </vaadin-button>
               </div>`
             )}
 
-            <vaadin-button @click="${() => appendItem(this.binder.model.products)}">
-             <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add product
+            <vaadin-button @click="${() => appendItem(this.binder.model.lines)}">
+             <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add line
             </vaadin-button>
 
             <h5 class="flex-row">
               <span class="flex-1">Total</span>
-              <span>${Array.from(this.binder.value.products)
-                .map(product => product.price * product.quantity)
+              <span>${Array.from(this.binder.value.lines)
+                .map(line => line.product.price * line.quantity)
                 .reduce((total, nth) => total + nth, 0)} €
               </span>
               <vaadin-button theme="icon" aria-label="" style="visibility: hidden;">

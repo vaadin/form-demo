@@ -16,7 +16,7 @@ public class Order extends IdEntity {
     private LocalDate dueDate;
     @NotNull(message = "{bakery.due.time.required}")
     private LocalTime dueTime;
-    private List<Product> products;
+    private List<OrderLine> lines;
     private Customer customer;
 
     private String notes = "";
@@ -26,15 +26,15 @@ public class Order extends IdEntity {
             Location pickupLocation,
             LocalDate dueDate,
             LocalTime dueTime,
-            List<Product> products) {
+            List<OrderLine> lines) {
         super(id);
         this.customer = customer;
         this.pickupLocation = pickupLocation;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
-        this.products = products;
+        this.lines = lines;
     }
-    
+
     public Location getPickupLocation() {
         return pickupLocation;
     }
@@ -66,26 +66,26 @@ public class Order extends IdEntity {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-    public List<Product> getProducts() {
-        return products;
+    public List<OrderLine> getLines() {
+        return lines;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setLines(List<OrderLine> lines) {
+        this.lines = lines;
     }
 
-    public void addProduct(Product product) {
-        if (products == null) {
-            products = new ArrayList<Product>();
+    public void addLine(OrderLine line) {
+        if (lines == null) {
+            lines = new ArrayList<OrderLine>();
         }
-        List<Product> existing = products.stream()
-                .filter(p -> p.getId().equals(product.getId()))
+        List<OrderLine> existing = lines.stream()
+                .filter(p -> p.getId().equals(line.getId()))
                 .collect(Collectors.toList());
         if (existing.size() > 0) {
             existing.get(0).setQuantity(
-                    existing.get(0).getQuantity() + product.getQuantity());
+                    existing.get(0).getQuantity() + line.getQuantity());
         } else {
-            products.add(product);
+            lines.add(line);
         }
     }
 }
