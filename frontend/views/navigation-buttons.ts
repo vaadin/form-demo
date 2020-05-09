@@ -91,7 +91,8 @@ export class NavigationButtons extends LitElement {
       return;
     }
     const item = await this.binder.submitTo(this.submit);
-    this.go(item.id);
+    console.log(">>>", item)
+    item && this.go(item.id);
   }
 
   private async new() {

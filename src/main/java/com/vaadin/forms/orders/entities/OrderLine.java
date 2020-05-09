@@ -6,6 +6,11 @@ import javax.validation.constraints.Positive;
 public class OrderLine extends IdEntity {
 
     private Product product;
+    @Positive
+    private Integer quantity;
+    @Nullable
+    private String details;
+
     public Product getProduct() {
         return product;
     }
@@ -14,20 +19,13 @@ public class OrderLine extends IdEntity {
         this.product = product;
     }
 
-
     public String getDetails() {
         return details;
     }
 
-
     public void setDetails(String details) {
         this.details = details;
     }
-
-    @Positive
-    private Integer quantity;
-    @Nullable
-    private String details;
 
     public OrderLine(Long id, Product product, int quantity, String details) {
         super(id);
@@ -35,7 +33,6 @@ public class OrderLine extends IdEntity {
         this.quantity = quantity;
         this.details = details;
     }
-
 
     public Integer getQuantity() {
         return quantity;

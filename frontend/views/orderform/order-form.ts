@@ -98,18 +98,21 @@ export class OrderForm extends LitElement {
 
         <vaadin-form-layout id="form3" colspan="3">
           <vaadin-text-field
-           label="Customer"
-           colspan="2"
-           ...="${field(this.binder.model.customer.email)}">
+            label="Customer"
+            colspan="3"
+            ...="${field(this.binder.model.customer.fullName)}">
             <iron-icon slot="prefix" icon="vaadin:user"></iron-icon>
           </vaadin-text-field>
-
+          <vaadin-text-field
+           colspan="2"
+           ...="${field(this.binder.model.customer.email)}">
+            <iron-icon slot="prefix" icon="vaadin:mailbox"></iron-icon>
+          </vaadin-text-field>
           <vaadin-text-field
            label="Phone number"
            ...="${field(this.binder.model.customer.phoneNumber)}">
             <iron-icon slot="prefix" icon="vaadin:phone"></iron-icon>
           </vaadin-text-field>
-
           <vaadin-text-area
            label="Additional Details"
            colspan="3"
@@ -128,7 +131,7 @@ export class OrderForm extends LitElement {
                  item-value-path="description"
                  ...="${
                   field(lineModel.product.description, (comboBox: any) => {
-                    setValue(lineModel.product.price, (comboBox.selectedItem as Product).price);
+                    setValue(lineModel.product.price, comboBox.selectedItem?.price);
                   })
                  }"
                  ></vaadin-combo-box>
