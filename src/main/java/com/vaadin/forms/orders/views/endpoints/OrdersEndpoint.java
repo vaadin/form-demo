@@ -35,6 +35,10 @@ public class OrdersEndpoint {
         return new Orders(employees, totalSize);
     }
 
+    public Optional<Order> getOrder(String id) {
+        return getItem(service.getOrders(), id);
+    }
+
     public Order saveOrder(Order item) {
         item.getLines().forEach(line -> {
             if (line.getId() == null) {
@@ -44,8 +48,8 @@ public class OrdersEndpoint {
         return saveItem(service.getOrders(), item);
     }
 
-    public Optional<Order> getOrder(String id) {
-        return getItem(service.getOrders(), id);
+    public void deleteOrder(Order item) {
+        deleteItem(service.getOrders(), item);
     }
 
     public Optional<Customer> getCustomer(String id) {
@@ -56,6 +60,10 @@ public class OrdersEndpoint {
         return saveItem(service.getCustomers(), item);
     }
 
+    public void deleteCustomer(Customer item) {
+        deleteItem(service.getCustomers(), item);
+    }
+
     public List<String> getLocations() {
         return service.getLocations();
     }
@@ -64,17 +72,30 @@ public class OrdersEndpoint {
         return service.getProducts();
     }
 
-    public Product saveProduct(Product item) {
-        return saveItem(service.getProducts(), item);
-    }
-
     public Optional<Product> getProduct(String id) {
         return getItem(service.getProducts(), id);
     }
 
+    public Product saveProduct(Product item) {
+        return saveItem(service.getProducts(), item);
+    }
+
+    public void deleteProduct(Product item) {
+        deleteItem(service.getProducts(), item);
+    }
+
+
     public List<String> getTimes() {
         return service.getTimes().stream().map(t -> t.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                 .collect(Collectors.toList());
+    }
+
+    private <T extends IdEntity> Optional<T> getItem(List<T> items, String id) {
+        return id != null && id.matches("\\d+") ? getItem(items, Long.parseLong(id)) : Optional.empty();
+    }
+
+    private <T extends IdEntity> Optional<T> getItem(List<T> items, Long id) {
+        return items.stream().filter(item -> item.getId().equals(id)).findFirst();
     }
 
     private <T extends IdEntity> T saveItem(List<T> items, T item) {
@@ -89,19 +110,18 @@ public class OrdersEndpoint {
         return item;
     }
 
+    private <T extends IdEntity> void deleteItem(List<T> items, T item) {
+        item = getItem(items, item.getId()).orElse(null);
+        if (item != null) {
+            int idx = items.indexOf(item);
+            items.remove(idx);
+        }
+    }
+
     private  <T extends IdEntity> long computeNextId(List<T> items) {
         T max = items.stream().max(Comparator.comparing(IdEntity::getId)).orElse(null);
         return max == null ? 1 : (max.getId() + 1);
     }
-
-    private <T extends IdEntity> Optional<T> getItem(List<T> items, String id) {
-        return id != null && id.matches("\\d+") ? getItem(items, Long.parseLong(id)) : Optional.empty();
-    }
-
-    private <T extends IdEntity> Optional<T> getItem(List<T> items, Long id) {
-        return items.stream().filter(item -> item.getId().equals(id)).findFirst();
-    }
-
 
     public static class Orders {
         private List<Order> orders;

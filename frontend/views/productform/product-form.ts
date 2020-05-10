@@ -29,6 +29,13 @@ export class ProductForm extends LitElement {
         <span class="dim">Product #${this.binder.model.id}</span>
       </div>
 
+      <navigation-buttons
+        .binder="${this.binder}"
+        .submit="${viewEndpoint.saveProduct}"
+        .load="${viewEndpoint.getProduct}"
+        .delete="${viewEndpoint.deleteProduct}"
+      ></navigation-buttons>
+
       <vaadin-form-layout id="form1" .responsiveSteps="${[{minWidth: "0", columns: 3}]}">
         <vaadin-text-field id="description" label="Product" colspan="2"
           ...="${field(this.binder.model.description)}"
@@ -41,12 +48,6 @@ export class ProductForm extends LitElement {
           <div slot="suffix">€</div>
         </vaadin-integer-field>
       </vaadin-form-layout>
-
-      <navigation-buttons
-        .binder="${this.binder}"
-        .submit="${viewEndpoint.saveProduct}"
-        .load="${viewEndpoint.getProduct}"
-      ></navigation-buttons>
     `;
   }
 

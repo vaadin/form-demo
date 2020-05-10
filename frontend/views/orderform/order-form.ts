@@ -75,6 +75,7 @@ export class OrderForm extends LitElement {
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveOrder}"
         .load="${viewEndpoint.getOrder}"
+        .delete="${viewEndpoint.deleteOrder}"
       ></navigation-buttons>
 
       <vaadin-form-layout id="form1">
@@ -104,6 +105,7 @@ export class OrderForm extends LitElement {
             <iron-icon slot="prefix" icon="vaadin:user"></iron-icon>
           </vaadin-text-field>
           <vaadin-text-field
+           label="Email"
            colspan="2"
            ...="${field(this.binder.model.customer.email)}">
             <iron-icon slot="prefix" icon="vaadin:mailbox"></iron-icon>
@@ -121,6 +123,7 @@ export class OrderForm extends LitElement {
 
           <div colspan="3">
             <h3>Products</h3>
+            <vaadin-form-layout>
             ${modelRepeat(this.binder.model.lines,
               (lineModel, line, index) => html`
               <div class="flex-row">
@@ -143,36 +146,39 @@ export class OrderForm extends LitElement {
                  prevent-invalid-input
                  ...="${field(lineModel.quantity)}"
                  ></vaadin-integer-field>
+              </div>
+              <div class="flex-row">
                 <vaadin-number-field
-                  .label="${index === 0 ? 'Unit cost' : undefined}"
                   readonly
                   theme="align-right"
                   .value="${lineModel.product.price.valueOf()}"
                 >
-                  <div slot="suffix">€</div>
+                <div slot="prefix">x</div>
+                <div slot="suffix">€</div>
                 </vaadin-number-field>
                 <vaadin-number-field
-                  .label="${index === 0 ? 'Total cost' : undefined}"
                   readonly
                   theme="align-right"
                   .value="${line.product.price * line.quantity}"
                 >
                   <div slot="suffix">€</div>
                 </vaadin-number-field>
-                <vaadin-button theme="icon tertiary error" aria-label="remove product"
+                <vaadin-button theme="icon tertiary error"
+                 aria-label="remove product"
                  @click=${() => removeItem<OrderLine, OrderLineModel<OrderLine>>(lineModel)}
                 >
                  <iron-icon slot="prefix" icon="vaadin:trash"></iron-icon>
                 </vaadin-button>
-              </div>`
+              </div>
+              `
             )}
-
-            <vaadin-button @click="${() => appendItem(this.binder.model.lines)}">
-             <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add line
-            </vaadin-button>
+            </vaadin-form-layout>
 
             <h5 class="flex-row">
-              <span class="flex-1">Total</span>
+              <vaadin-button theme="small" @click="${() => appendItem(this.binder.model.lines)}">
+                <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add line
+              </vaadin-button>
+              <span class="flex-1" style="text-align: right; padding-right: 1em">Total:</span>
               <span>${Array.from(this.binder.value.lines)
                 .map(line => line.product.price * line.quantity)
                 .reduce((total, nth) => total + nth, 0)} €

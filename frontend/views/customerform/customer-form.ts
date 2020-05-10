@@ -27,6 +27,13 @@ export class CustomerForm extends LitElement {
         <span class="dim">Customer #${this.binder.model.id}</span>
       </div>
 
+      <navigation-buttons
+        .binder="${this.binder}"
+        .submit="${viewEndpoint.saveCustomer}"
+        .load="${viewEndpoint.getCustomer}"
+        .delete="${viewEndpoint.deleteCustomer}"
+      ></navigation-buttons>
+
       <vaadin-form-layout id="form1">
         <vaadin-text-field id="fullName" label="Customer"
           ...="${field(this.binder.model.fullName)}">
@@ -42,12 +49,6 @@ export class CustomerForm extends LitElement {
           ...="${field(this.binder.model.email)}">
         ></vaadin-text-field>
       </vaadin-form-layout>
-
-      <navigation-buttons
-        .binder="${this.binder}"
-        .submit="${viewEndpoint.saveCustomer}"
-        .load="${viewEndpoint.getCustomer}"
-      ></navigation-buttons>
     `;
   }
 

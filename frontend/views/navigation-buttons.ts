@@ -11,30 +11,35 @@ import {router} from '../index';
 @customElement('navigation-buttons')
 export class NavigationButtons extends LitElement {
   public binder!: Binder<any, any>;
-  public submit!: (value: any) => Promise<void>;
+  public submit!: (value: any) => Promise<any>;
   public load!: (value: any) => Promise<any>;
+  public delete!: (value: any) => Promise<void>;
   public location = router.location;
   @query('#notification') private notification: any;
 
   render() {
     return html`
       <vaadin-horizontal-layout theme="spacing" class="button-layout">
-        <vaadin-button id="prev" @click="${this.prev}">
+        <vaadin-button id="prev" theme="small" @click="${this.prev}">
           <iron-icon icon="vaadin:arrow-left"></iron-icon>
         </vaadin-button>
-        <vaadin-button id="next" @click="${this.next}">
+        <vaadin-button id="next" theme="small" @click="${this.next}">
          <iron-icon icon="vaadin:arrow-right"></iron-icon>
         </vaadin-button>
-        <vaadin-button id="new" @click="${this.new}">
+        <vaadin-button id="new" theme="small" @click="${this.new}">
           <iron-icon icon="vaadin:plus"></iron-icon>
           New
         </vaadin-button>
         <div id="total" style="flex-grow: 1"></div>
-        <vaadin-button id="cancel" @click="${this.cancel}">
-          <iron-icon icon="vaadin:close-small"></iron-icon>
+        <vaadin-button id="cancel" theme="small" @click="${this.cancel}">
+          <iron-icon icon="vaadin:arrow-backward"></iron-icon>
           Cancel
         </vaadin-button>
-        <vaadin-button id="review" theme="primary" @click="${this.save}">
+        <vaadin-button id="delete" theme="small error" @click="${this.trash}">
+          <iron-icon icon="vaadin:close-small"></iron-icon>
+          Delete
+        </vaadin-button>
+        <vaadin-button id="review" theme="small primary" @click="${this.save}">
           <iron-icon icon="vaadin:check"></iron-icon>
           Save
         </vaadin-button>
@@ -69,9 +74,10 @@ export class NavigationButtons extends LitElement {
       this.show("Please save your modifications");
       return;
     }
+
     let id = parseInt(String(this.location.params.id));
-    id = id + dir < 0 ? id : id + dir;
-    this.go(id);
+    id = Number.isNaN(id) ? 1 : id + dir < 0 ? id : id + dir;
+    this.go(id ? id : undefined);
   }
 
   private go(id?: number) {
@@ -105,6 +111,15 @@ export class NavigationButtons extends LitElement {
 
   private cancel() {
     this.binder.reset();
+  }
+
+  private async trash() {
+    if (!this.delete) {
+      this.show('delete is not implemented yet');
+      return;
+    }
+    await this.delete(this.binder.defaultValue);
+    this.go();
   }
 
   private show(message: string) {
