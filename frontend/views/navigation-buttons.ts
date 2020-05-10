@@ -3,6 +3,7 @@ import { customElement, html, LitElement, query } from 'lit-element';
 import '@vaadin/vaadin-ordered-layout/vaadin-horizontal-layout';
 import '@vaadin/vaadin-button/vaadin-button';
 import '@vaadin/vaadin-icons';
+import '@vaadin/vaadin-notification'
 
 import { Binder} from '@vaadin/flow-frontend/Binder';
 import {router} from '../index';
@@ -90,9 +91,12 @@ export class NavigationButtons extends LitElement {
       this.show('save is not implemented yet');
       return;
     }
-    const item = await this.binder.submitTo(this.submit);
-    console.log(">>>", item)
-    item && this.go(item.id);
+    try {
+      const item = await this.binder.submitTo(this.submit);
+      item && this.go(item.id);
+    } catch (error) {
+      this.show(error.message);
+    }
   }
 
   private async new() {
@@ -104,7 +108,7 @@ export class NavigationButtons extends LitElement {
   }
 
   private show(message: string) {
-    this.notification.renderer = (root:HTMLElement) =>  root.textContent = message;
+    this.notification.renderer = (root: HTMLElement) => root.innerHTML = message.replace(/\n/g, '<br />');
     this.notification.open();
   }
 }

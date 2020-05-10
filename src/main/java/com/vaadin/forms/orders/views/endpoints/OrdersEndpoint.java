@@ -78,7 +78,7 @@ public class OrdersEndpoint {
     }
 
     private <T extends IdEntity> T saveItem(List<T> items, T item) {
-        if (item.getId() != null) {
+        if (item.getId() != null && item.getId() > 0) {
             T old = getItem(items, item.getId()).orElse(null);
             int idx = items.indexOf(old);
             items.set(idx, item);
