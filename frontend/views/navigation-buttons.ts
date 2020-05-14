@@ -5,7 +5,7 @@ import '@vaadin/vaadin-button/vaadin-button';
 import '@vaadin/vaadin-icons';
 import '@vaadin/vaadin-notification'
 
-import { Binder} from '@vaadin/flow-frontend/Binder';
+import { Binder, ValidationError} from '@vaadin/flow-frontend/Binder';
 import {router} from '../index';
 
 @customElement('navigation-buttons')
@@ -101,6 +101,12 @@ export class NavigationButtons extends LitElement {
       item && this.go(item.id);
       this.show(`Item #${item.id} saved`);
     } catch (error) {
+      (error as ValidationError).errors?.forEach(e => {
+        if (e.validator.constructor.name === 'ServerValidator' && this.parent[e.property]) {
+          this.parent[e.property].invalid = true;
+          this.parent[e.property].errorMessage = e.validator.message;
+        }
+      })
       this.show(error.message);
     }
   }

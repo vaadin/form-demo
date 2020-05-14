@@ -1,12 +1,11 @@
-import { customElement, html, LitElement, unsafeCSS } from 'lit-element';
+import { customElement, html, LitElement, unsafeCSS, query} from 'lit-element';
 
 import '@vaadin/vaadin-form-layout/vaadin-form-layout';
 import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '@vaadin/vaadin-text-field/vaadin-integer-field';
 import '../navigation-buttons';
 
-
-import {field,  Binder} from '@vaadin/flow-frontend/Binder';
+import {field, Binder} from '@vaadin/flow-frontend/Binder';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import ProductModel from '../../generated/com/vaadin/forms/orders/entities/ProductModel';
@@ -20,6 +19,7 @@ export class ProductForm extends LitElement {
     return [CSSModule('lumo-typography'), unsafeCSS(styles)];
   }
 
+  @query('#description') description: any;
   private binder = new Binder(this, ProductModel, () => this.requestUpdate());
 
   render() {
