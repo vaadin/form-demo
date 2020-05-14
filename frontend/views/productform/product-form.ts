@@ -30,6 +30,7 @@ export class ProductForm extends LitElement {
       </div>
 
       <navigation-buttons
+        .parent="${this}"
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveProduct}"
         .load="${viewEndpoint.getProduct}"
@@ -49,9 +50,5 @@ export class ProductForm extends LitElement {
         </vaadin-integer-field>
       </vaadin-form-layout>
     `;
-  }
-
-  public onBeforeLeave(_location: any, commands: any) {
-    return this.binder.isDirty && commands.prevent();
   }
 }

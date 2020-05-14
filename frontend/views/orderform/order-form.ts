@@ -72,6 +72,7 @@ export class OrderForm extends LitElement {
       <p>Submitting: ${this.binder.isSubmitting}</p>
 
       <navigation-buttons
+        .parent="${this}"
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveOrder}"
         .load="${viewEndpoint.getOrder}"

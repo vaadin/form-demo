@@ -28,6 +28,7 @@ export class CustomerForm extends LitElement {
       </div>
 
       <navigation-buttons
+        .parent="${this}"
         .binder="${this.binder}"
         .submit="${viewEndpoint.saveCustomer}"
         .load="${viewEndpoint.getCustomer}"
@@ -50,9 +51,5 @@ export class CustomerForm extends LitElement {
         ></vaadin-text-field>
       </vaadin-form-layout>
     `;
-  }
-
-  public onBeforeLeave(_location: any, commands: any) {
-    return this.binder.isDirty && commands.prevent();
   }
 }
