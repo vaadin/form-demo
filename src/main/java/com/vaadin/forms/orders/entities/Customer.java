@@ -12,11 +12,10 @@ public class Customer extends IdEntity {
     private String fullName;
 
     @NotBlank
-    @Size(max = 20, message = "{bakery.phone.number.invalid}")
-    @Pattern(regexp = "^(\\+\\d+)?([ -]?\\d+){4,14}$", message = "{bakery.phone.number.invalid}")
+    @Pattern(regexp = "^(\\+\\d+)?([ -]?\\d+){4,14}$", message = "Invalid phone number")
     private String phoneNumber;
 
-    @Email(message = "Please type a valid email address")
+    @Email(message = "Invalid email address")
     private String email;
 
     public Customer(Long id, String fullName, String email,

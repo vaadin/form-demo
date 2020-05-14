@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class Product extends IdEntity {
 
 
-    @NotBlank @Size(min = 3, max = 50)
+    @NotBlank @Size(min = 3, max = 50) @Capitalized
     private String description;
     @Positive
     private Integer price;
