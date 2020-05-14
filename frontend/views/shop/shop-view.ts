@@ -1,4 +1,4 @@
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html, LitElement, property, query } from 'lit-element';
 
 import { router } from '../../index';
 
@@ -14,10 +14,12 @@ export class ShopEndpoint extends LitElement {
   @property({ type: Object }) location = router.location;
   @property({ type: Array }) menuTabs: MenuTab[] = [
     {route: '', name: 'Welcome'},
-    {route: 'order/1', name: 'Orders Editor'},
-    {route: 'customer/1', name: 'Customer Editor'},
-    {route: 'product/1', name: 'Product Editor'}
+    {route: 'order', name: 'Orders Editor'},
+    {route: 'customer', name: 'Customer Editor'},
+    {route: 'product', name: 'Product Editor'}
   ];
+
+  @query('#tabs') tabs!: any;
 
   static get styles() {
     return css`
@@ -32,14 +34,20 @@ export class ShopEndpoint extends LitElement {
     `;
   }
 
+  updated() {
+    const clean = (path: string) => path.replace(/^\/?(.+?)(\/.+)?$/, '$1');
+    router.ready.then(loc => this.tabs.selected =
+      this.menuTabs.findIndex(tab => clean(loc.pathname) === clean(tab.route)));
+  }
+
   render() {
     return html`
       <vaadin-app-layout id="layout">
-        <vaadin-tabs slot="navbar" id="tabs" .selected="${this.getIndexOfSelectedTab()}">
+        <vaadin-tabs slot="navbar" id="tabs">
           ${this.menuTabs.map(
             menuTab => html`
               <vaadin-tab>
-                <a href="${router.urlForPath(menuTab.route)}" tabindex="-1">${menuTab.name}</a>
+                <a href="${router.urlForPath(menuTab.route)}">${menuTab.name}</a>
               </vaadin-tab>
             `
           )}
@@ -47,20 +55,5 @@ export class ShopEndpoint extends LitElement {
         <slot></slot>
       </vaadin-app-layout>
     `;
-  }
-
-  private isCurrentLocation(route: string): boolean {
-    return router.urlForPath(route) === this.location.getUrl();
-  }
-
-  private getIndexOfSelectedTab(): number {
-    const index = this.menuTabs.findIndex(menuTab => this.isCurrentLocation(menuTab.route));
-
-    // Select first tab if there is no tab for home in the menu
-    if (index === -1 && this.isCurrentLocation('')) {
-      return 0;
-    }
-
-    return index;
   }
 }
