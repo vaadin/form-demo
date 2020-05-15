@@ -2,7 +2,6 @@ package com.vaadin.forms.orders.views.endpoints;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -105,7 +104,7 @@ public class OrdersEndpoint {
             items.set(idx, item);
             return item;
         }
-        item.setId(computeNextId(items));
+        item.setId(computeFreeId(items));
         items.add(item);
         return item;
     }
@@ -118,9 +117,9 @@ public class OrdersEndpoint {
         }
     }
 
-    private  <T extends IdEntity> long computeNextId(List<T> items) {
-        T max = items.stream().max(Comparator.comparing(IdEntity::getId)).orElse(null);
-        return max == null ? 1 : (max.getId() + 1);
+    private  <T extends IdEntity> long computeFreeId(List<T> items) {
+        return 1l + items.stream().map(IdEntity::getId).sorted().reduce(0l,
+                (a, b) -> b - a > 1 ? a : b);
     }
 
     public static class Orders {

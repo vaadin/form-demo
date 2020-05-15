@@ -38,7 +38,7 @@ export class ProductForm extends LitElement {
       ></navigation-buttons>
 
       <vaadin-form-layout id="form1" .responsiveSteps="${[{minWidth: "0", columns: 3}]}">
-        <vaadin-text-field id="description" label="Product" colspan="2"
+        <vaadin-text-field id="description" label="Description" colspan="2"
           ...="${field(this.binder.model.description)}"
         >
           <iron-icon slot="prefix" icon="vaadin:cutlery"></iron-icon>
