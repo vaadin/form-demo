@@ -15,7 +15,7 @@ import '@vaadin/vaadin-ordered-layout';
 
 import '../navigation-buttons';
 
-import {field, modelRepeat, Binder, setValue, removeItem, appendItem} from '@vaadin/flow-frontend/Binder';
+import {field, modelRepeat, Binder, setValue, removeItem, appendItem, getModelValidators} from '@vaadin/flow-frontend/Binder';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import Product from '../../generated/com/vaadin/forms/orders/entities/Product';
@@ -60,6 +60,11 @@ export class OrderForm extends LitElement {
     OrderForm.productList = await viewEndpoint.getProducts();
     OrderForm.timesList = await viewEndpoint.getTimes();
     this.requestUpdate();
+
+    getModelValidators(this.binder.model).add({
+      message: 'Select at least one product for the order',
+      validate: (value) => value.lines.length > 0
+    })
   }
 
   render() {
