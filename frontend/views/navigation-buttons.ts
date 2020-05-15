@@ -130,7 +130,7 @@ export class NavigationButtons extends LitElement {
 
   private show(message: string) {
     this.notification.close();
-    this.notification.renderer = (root: HTMLElement) => root.innerHTML = message.replace(/\n/g, '<br />');
+    this.notification.renderer = (root: HTMLElement) => root.innerHTML = '<br/>' + message.replace(/\n/g, '<br/>') + '<br/><br/>';
     this.notification.open();
   }
 }

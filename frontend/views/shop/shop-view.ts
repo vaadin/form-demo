@@ -35,7 +35,7 @@ export class ShopEndpoint extends LitElement {
   }
 
   updated() {
-    const clean = (path: string) => path.replace(/^\/?(.+?)(\/.+)?$/, '$1');
+    const clean = (path: string) => path.replace(/^\/?(.*?)(\/.*)?$/, '$1');
     router.ready.then(loc => this.tabs.selected =
       this.menuTabs.findIndex(tab => clean(loc.pathname) === clean(tab.route)));
   }
