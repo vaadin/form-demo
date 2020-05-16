@@ -5,7 +5,7 @@ import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '@vaadin/vaadin-text-field/vaadin-integer-field';
 import '../navigation-buttons';
 
-import {field, Binder} from '@vaadin/flow-frontend/Binder';
+import {field, Binder} from '@vaadin/form';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import ProductModel from '../../generated/com/vaadin/forms/orders/entities/ProductModel';
