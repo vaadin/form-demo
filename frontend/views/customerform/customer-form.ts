@@ -4,7 +4,7 @@ import '@vaadin/vaadin-form-layout';
 import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '../navigation-buttons';
 
-import {field,  Binder} from '@vaadin/flow-frontend/Binder';
+import {field,  Binder} from '@vaadin/form';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import CustomerModel from '../../generated/com/vaadin/forms/orders/entities/CustomerModel';

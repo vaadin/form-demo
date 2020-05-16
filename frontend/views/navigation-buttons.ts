@@ -5,7 +5,7 @@ import '@vaadin/vaadin-button/vaadin-button';
 import '@vaadin/vaadin-icons';
 import '@vaadin/vaadin-notification'
 
-import { Binder, ValidationError} from '@vaadin/flow-frontend/Binder';
+import { Binder, ValidationError} from '@vaadin/form';
 import {router} from '../index';
 
 @customElement('navigation-buttons')

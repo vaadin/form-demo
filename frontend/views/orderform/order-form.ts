@@ -15,7 +15,7 @@ import '@vaadin/vaadin-ordered-layout';
 
 import '../navigation-buttons';
 
-import {field, modelRepeat, Binder, setValue, removeItem, appendItem, getModelValidators} from '@vaadin/flow-frontend/Binder';
+import {field, modelRepeat, Binder, setValue, removeItem, appendItem, getModelValidators} from '@vaadin/form';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import Product from '../../generated/com/vaadin/forms/orders/entities/Product';
