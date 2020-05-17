@@ -16,7 +16,8 @@ export class ShopEndpoint extends LitElement {
     {route: '', name: 'Welcome'},
     {route: 'order', name: 'Orders Editor'},
     {route: 'customer', name: 'Customer Editor'},
-    {route: 'product', name: 'Product Editor'}
+    {route: 'product', name: 'Product Editor'},
+    {route: 'vaadin', name: 'Vaadin Elements'},
   ];
 
   @query('#tabs') tabs!: any;
