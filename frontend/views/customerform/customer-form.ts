@@ -18,7 +18,7 @@ export class CustomerForm extends LitElement {
     return [CSSModule('lumo-typography'), unsafeCSS(styles)];
   }
 
-  private binder = new Binder(this, CustomerModel, () => this.requestUpdate());
+  private binder = new Binder(this, CustomerModel);
 
   render() {
     return html`

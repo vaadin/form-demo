@@ -20,7 +20,7 @@ export class ProductForm extends LitElement {
   }
 
   @query('#description') description: any;
-  private binder = new Binder(this, ProductModel, () => this.requestUpdate());
+  private binder = new Binder(this, ProductModel);
 
   render() {
     return html`

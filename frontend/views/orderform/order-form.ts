@@ -36,7 +36,7 @@ export class OrderForm extends LitElement {
   @query('#form2') private form2: any;
   @query('#form3') private form3: any;
 
-  private binder = new Binder(this, OrderModel, () => this.requestUpdate());
+  private binder = new Binder(this, OrderModel);
 
   private static productList: ReadonlyArray<Product> = [];
   private static locationList: ReadonlyArray<string> = [];
