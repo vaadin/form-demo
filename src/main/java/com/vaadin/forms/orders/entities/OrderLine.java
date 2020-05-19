@@ -6,7 +6,7 @@ import javax.validation.constraints.Positive;
 public class OrderLine extends IdEntity {
 
     private Product product;
-    @Positive
+    @Positive(message = "Should be greater than zero")
     private Integer quantity;
     @Nullable
     private String details;

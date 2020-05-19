@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 public class Order extends IdEntity {
 
-    @NotNull(message = "{bakery.pickup.location.required}")
+    @NotNull(message = "Select a pickup location")
     private Location pickupLocation;
-    @NotNull(message = "{bakery.due.date.required}")
+    @NotNull(message = "Provide the due date")
     private LocalDate dueDate;
-    @NotNull(message = "{bakery.due.time.required}")
+    @NotNull(message = "Provide the due time")
     private LocalTime dueTime;
     private List<OrderLine> lines;
     private Customer customer;
