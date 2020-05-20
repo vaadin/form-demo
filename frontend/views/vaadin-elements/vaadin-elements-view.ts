@@ -24,14 +24,10 @@ import '@vaadin/vaadin-notification';
 
 import * as endpoint from '../../generated/ElementsEndpoint';
 import ElementsModel from '../../generated/com/vaadin/forms/orders/entities/ElementsModel';
-import { field, Binder, FieldStrategy } from '@vaadin/form';
+import { field, Binder } from '@vaadin/form';
 
 import { CSSModule } from '../../css-utils';
 import styles from '../form-view.css';
-
-class MyStrategy implements FieldStrategy {
-
-}
 
 @customElement('vaadin-elements-view')
 export class VaadinElementsView extends LitElement {
@@ -118,6 +114,8 @@ export class VaadinElementsView extends LitElement {
           <vaadin-date-time-picker-date-picker slot="date-picker"></vaadin-date-time-picker-date-picker>
           <vaadin-date-time-picker-time-picker slot="time-picker"></vaadin-date-time-picker-time-picker>
         </vaadin-date-time-picker>
+
+        <vaadin-rich-text-editor ...="${field(this.binder.model.richText)}" label="rich-text-editor" theme="compact" colspan="2"></vaadin-rich-text-editor>
 
       </vaadin-form-layout>
       <vaadin-notification position="bottom-stretch"></vaadin-notification>
