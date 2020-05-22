@@ -39,19 +39,23 @@ export class VaadinElementsView extends LitElement {
         height: calc(100% - 80px);
         overflow-y: auto;
       }
-      vaadin-checkbox[invalid], vaadin-radio-button[invalid], vaadin-checkbox-group[invalid],
-      vaadin-radio-group[invalid], vaadin-list-box[invalid], vaadin-rich-text-editor[invalid], vaadin-custom-field[invalid] > * {
-        background: var(--lumo-error-color-10pct);
-      }
       vaadin-form-layout, vaadin-list-box {
         border: solid 1px #8080802e;
         padding: 3px;
+      }
+
+      vaadin-checkbox[invalid], vaadin-radio-button[invalid],
+      vaadin-list-box[invalid], vaadin-rich-text-editor[invalid],
+      vaadin-checkbox-group[invalid] > *,vaadin-radio-group[invalid] > *,
+      vaadin-custom-field[invalid] > * {
+        background: var(--lumo-error-color-10pct);
       }
       `
     ];
   }
 
   private binder = new Binder(this, ElementsModel);
+
   private options = endpoint.getOptions();
   @query('vaadin-notification') private notification: any;
 
@@ -68,8 +72,10 @@ export class VaadinElementsView extends LitElement {
       <vaadin-button @click="${() => this.binder.reset()}">reset</vaadin-button>
 
       <vaadin-form-layout @click="${() => this.notification.close()}">
+
         <vaadin-checkbox ...="${field(this.binder.model.checkbox)}">checkbox</vaadin-checkbox>
         <vaadin-radio-button ...="${field(this.binder.model.radioButton)}">radio-button</vaadin-radio-button>
+
         <vaadin-checkbox-group ...="${field(this.binder.model.checkboxGroup)}" label="checkbox-group">
           ${until(this.options.then(opts => repeat(opts, (item, _i) => html`
             <vaadin-checkbox value="${item}">${item}</vaadin-checkbox>
@@ -83,9 +89,9 @@ export class VaadinElementsView extends LitElement {
         <vaadin-combo-box ...="${field(this.binder.model.comboBox)}" label="combo-box"
           .items="${until(this.options)}">
         </vaadin-combo-box>
+
         <vaadin-select ...="${field(this.binder.model.select)}" allow-custom-value label="select">
           <template>
-            <!-- https://github.com/vaadin/vaadin-select/issues/224 -->
             <vaadin-list-box>
               <vaadin-item><span>item-1</span></vaadin-item>
               <vaadin-item><span>item-2</span></vaadin-item>

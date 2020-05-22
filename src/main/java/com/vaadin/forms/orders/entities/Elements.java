@@ -23,31 +23,31 @@ public class Elements {
     public static enum Options {
        ITEM_1,
        ITEM_2;
-
        public String toString() {
            return super.toString().toLowerCase().replace("_", "-");
        }
     };
 
-    @NotNull @AssertTrue
-    private Boolean checkbox = true;
-    @NotNull @NotEmpty
-    private List<String> checkboxGroup = Arrays.asList("item-1");
-    @NotNull @AssertTrue
+    @NotNull @AssertTrue(message = "Please agree this")
     private Boolean radioButton = false;
     @NotNull @Pattern(regexp = "item-.+")
     private String radioButtonGroup = "item-2";
 
-    @NotNull @Pattern(regexp = "item-.+")
+    @NotNull @AssertTrue
+    private Boolean checkbox = true;
+    @NotNull @NotEmpty
+    private List<String> checkboxGroup = Arrays.asList("item-1");
+
+    @NotNull
     private String comboBox = "item-1";
-    @NotNull @Pattern(regexp = "item-.+")
+    @NotNull
     private String select = "item-1";
 
     @NotNull @Size(min = 2)
     private String customField = "foo";
     @NotNull @Size(min = 2)
     private String textField = "foo";
-    @NotNull @Size(min = 2)
+    @NotNull @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", message = "must be 8+ characters, with uppercase, lowercase, and numbers")
     private String passwordField = "bar";
     @NotNull @PositiveOrZero(message = "Should be positive or zero")
     private Integer integerField = 12;
