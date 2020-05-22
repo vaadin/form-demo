@@ -43,6 +43,10 @@ export class VaadinElementsView extends LitElement {
       vaadin-radio-group[invalid], vaadin-list-box[invalid], vaadin-rich-text-editor[invalid], vaadin-custom-field[invalid] > * {
         background: var(--lumo-error-color-10pct);
       }
+      vaadin-form-layout, vaadin-list-box {
+        border: solid 1px #8080802e;
+        padding: 3px;
+      }
       `
     ];
   }
@@ -63,7 +67,7 @@ export class VaadinElementsView extends LitElement {
       <vaadin-button @click="${() => this.binder.clear()}">clear</vaadin-button>
       <vaadin-button @click="${() => this.binder.reset()}">reset</vaadin-button>
 
-      <vaadin-form-layout style="border: solid 1px grey">
+      <vaadin-form-layout @click="${() => this.notification.close()}">
         <vaadin-checkbox ...="${field(this.binder.model.checkbox)}">checkbox</vaadin-checkbox>
         <vaadin-radio-button ...="${field(this.binder.model.radioButton)}">radio-button</vaadin-radio-button>
         <vaadin-checkbox-group ...="${field(this.binder.model.checkboxGroup)}" label="checkbox-group">
@@ -99,14 +103,13 @@ export class VaadinElementsView extends LitElement {
         <vaadin-email-field ...="${field(this.binder.model.emailField)}" label="email-field"></vaadin-email-field>
         <vaadin-text-area ...="${field(this.binder.model.textArea)}" label="textarea"></vaadin-text-area>
 
-        <vaadin-form-item>
-          <label slot="label">list-box</label>
+        <vaadin-custom-field label="list-box">
           <vaadin-list-box ...="${field(this.binder.model.listBox)}" label="list-box" id="list-box">
             ${until(this.options.then(opts => repeat(opts, (item, _i) => html`
               <vaadin-item><span>${item}</span></vaadin-item>
             `)))}
           </vaadin-list-box>
-        </vaadin-form-item>
+        </vaadin-custom-field>
 
         <vaadin-date-picker ...="${field(this.binder.model.datePicker)}" label="date-picker"></vaadin-date-picker>
         <vaadin-time-picker ...="${field(this.binder.model.timePicker)}" label="time-picker"></vaadin-time-picker>
@@ -115,10 +118,12 @@ export class VaadinElementsView extends LitElement {
           <vaadin-date-time-picker-time-picker slot="time-picker"></vaadin-date-time-picker-time-picker>
         </vaadin-date-time-picker>
 
-        <vaadin-rich-text-editor ...="${field(this.binder.model.richText)}" label="rich-text-editor" theme="compact" colspan="2"></vaadin-rich-text-editor>
+        <vaadin-custom-field label="rich-text-editor" colspan="2">
+          <vaadin-rich-text-editor ...="${field(this.binder.model.richText)}" label="rich-text-editor" theme="compact"></vaadin-rich-text-editor>
+        </vaadin-custom-field>
 
       </vaadin-form-layout>
-      <vaadin-notification position="bottom-stretch"></vaadin-notification>
+      <vaadin-notification duration="0" position="top-stretch"></vaadin-notification>
     `;
   }
 
@@ -130,7 +135,7 @@ export class VaadinElementsView extends LitElement {
     } catch (error) {
       message = error.message.replace(/\n/g, '<br/>');
     }
-    this.notification.renderer = (root: HTMLElement) => root.innerHTML = '<br/>' + message + '<br/><br/>';
+    this.notification.renderer = (root: Element) => root.innerHTML = '<br/>' + message + '<br/><br/>';
     this.notification.open();
   }
 }
