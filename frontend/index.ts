@@ -6,6 +6,7 @@ import './views/orderform/order-form';
 import './views/customerform/customer-form';
 import './views/productform/product-form';
 import './views/vaadin-elements/vaadin-elements-view';
+import './views/vaadin-demo/vaadin-demo-view';
 
 const routes = [
   {
@@ -18,6 +19,7 @@ const routes = [
       { path: 'product/:id', component: 'product-form' },
       { path: 'product', component: 'product-form' },
       { path: 'vaadin', component: 'vaadin-elements-view' },
+      { path: 'demo', component: 'vaadin-demo-view' },
     ]
   },
 ];
