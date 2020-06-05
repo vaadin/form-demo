@@ -107,9 +107,10 @@ export class NavigationButtons extends LitElement {
       this.show(`Item #${item.id} saved`);
     } catch (error) {
       (error as ValidationError).errors?.forEach(e => {
-        if (e.validator.constructor.name === 'ServerValidator' && this.parent[e.property]) {
-          this.parent[e.property].invalid = true;
-          this.parent[e.property].errorMessage = e.validator.message;
+        const prop = String(e.property);
+        if (e.validator.constructor.name === 'ServerValidator' && this.parent[prop]) {
+          this.parent[prop].invalid = true;
+          this.parent[prop].errorMessage = e.validator.message;
         }
       })
       this.show(error.message);
