@@ -1,4 +1,5 @@
-import { customElement, html, LitElement, query, unsafeCSS} from 'lit-element';
+import {customElement, html, LitElement, query, unsafeCSS} from 'lit-element';
+import {repeat} from 'lit-html/directives/repeat';
 
 import '@vaadin/vaadin-button/vaadin-button';
 import '@vaadin/vaadin-form-layout/vaadin-form-item';
@@ -15,12 +16,10 @@ import '@vaadin/vaadin-ordered-layout';
 
 import '../navigation-buttons';
 
-import {field, modelRepeat, Binder, setValue, removeItem, appendItem, getModelValidators} from '@vaadin/form';
+import {field, Binder} from '@vaadin/form';
 import * as viewEndpoint from '../../generated/OrdersEndpoint';
 
 import Product from '../../generated/com/vaadin/forms/orders/entities/Product';
-import OrderLine from '../../generated/com/vaadin/forms/orders/entities/OrderLine';
-import OrderLineModel from '../../generated/com/vaadin/forms/orders/entities/OrderLineModel';
 import OrderModel from '../../generated/com/vaadin/forms/orders/entities/OrderModel';
 
 import { CSSModule } from '../../css-utils';
@@ -61,10 +60,10 @@ export class OrderForm extends LitElement {
     OrderForm.timesList = await viewEndpoint.getTimes();
     this.requestUpdate();
 
-    getModelValidators(this.binder.model).add({
+    this.binder.addValidator({
       message: 'Select at least one product for the order',
       validate: (value) => value.lines.length > 0
-    })
+    });
   }
 
   render() {
@@ -74,7 +73,7 @@ export class OrderForm extends LitElement {
         <span class="dim">Order #${this.binder.model.id}</span>
       </div>
 
-      <p>Submitting: ${this.binder.isSubmitting}</p>
+      <p>Submitting: ${this.binder.submitting}</p>
 
       <navigation-buttons
         .parent="${this}"
@@ -130,8 +129,8 @@ export class OrderForm extends LitElement {
           <div colspan="3">
             <h3>Products</h3>
             <vaadin-form-layout>
-            ${modelRepeat(this.binder.model.lines,
-              (lineModel, line, index) => html`
+            ${repeat(this.binder.model.lines,
+              (lineBinder, index) => html`
               <div class="flex-row">
                 <vaadin-combo-box class="flex-1"
                  .label="${index === 0 ? 'Product' : undefined}"
@@ -139,8 +138,8 @@ export class OrderForm extends LitElement {
                  item-label-path="description"
                  item-value-path="description"
                  ...="${
-                  field(lineModel.product.description, (comboBox: any) => {
-                    setValue(lineModel.product.price, comboBox.selectedItem?.price);
+                  field(lineBinder.model.product.description, (comboBox: any) => {
+                    this.binder.for(lineBinder.model.product.price).value = comboBox.selectedItem?.price;
                   })
                  }"
                  ></vaadin-combo-box>
@@ -150,14 +149,14 @@ export class OrderForm extends LitElement {
                  max="15"
                  has-controls
                  prevent-invalid-input
-                 ...="${field(lineModel.quantity)}"
+                 ...="${field(lineBinder.model.quantity)}"
                  ></vaadin-integer-field>
               </div>
               <div class="flex-row">
                 <vaadin-number-field
                   readonly
                   theme="align-right"
-                  .value="${lineModel.product.price.valueOf()}"
+                  .value="${lineBinder.model.product.price.valueOf()}"
                 >
                 <div slot="prefix">x</div>
                 <div slot="suffix">€</div>
@@ -165,13 +164,13 @@ export class OrderForm extends LitElement {
                 <vaadin-number-field
                   readonly
                   theme="align-right"
-                  .value="${line.product.price * line.quantity}"
+                  .value="${lineBinder.value.product.price * lineBinder.value.quantity}"
                 >
                   <div slot="suffix">€</div>
                 </vaadin-number-field>
                 <vaadin-button theme="icon tertiary error"
                  aria-label="remove product"
-                 @click=${() => removeItem<OrderLine, OrderLineModel<OrderLine>>(lineModel)}
+                 @click=${() => lineBinder.removeItem()}
                 >
                  <iron-icon slot="prefix" icon="vaadin:trash"></iron-icon>
                 </vaadin-button>
@@ -181,11 +180,11 @@ export class OrderForm extends LitElement {
             </vaadin-form-layout>
 
             <h5 class="flex-row">
-              <vaadin-button theme="small" @click="${() => appendItem(this.binder.model.lines)}">
+              <vaadin-button theme="small" @click="${() => this.binder.for(this.binder.model.lines).appendItem()}">
                 <iron-icon slot="prefix" icon="vaadin:plus"></iron-icon>Add line
               </vaadin-button>
               <span class="flex-1" style="text-align: right; padding-right: 1em">Total:</span>
-              <span>${Array.from(this.binder.value.lines)
+              <span>${this.binder.value.lines
                 .map(line => line.product.price * line.quantity)
                 .reduce((total, nth) => total + nth, 0)} €
               </span>
