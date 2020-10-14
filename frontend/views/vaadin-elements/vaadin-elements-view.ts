@@ -62,7 +62,7 @@ export class VaadinElementsView extends LitElement {
   async firstUpdated(arg: any) {
     super.firstUpdated(arg);
     const item = await endpoint.getElements();
-    this.binder.reset(item);
+    this.binder.read(item);
   }
 
   render() {

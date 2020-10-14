@@ -59,7 +59,7 @@ export class NavigationButtons extends LitElement {
     if (id) {
       const item = await this.load(String(id));
       if (item) {
-        this.binder.reset(item);
+        this.binder.read(item);
       }
     }
 

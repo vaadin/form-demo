@@ -170,7 +170,7 @@ export class OrderForm extends LitElement {
                 </vaadin-number-field>
                 <vaadin-button theme="icon tertiary error"
                  aria-label="remove product"
-                 @click=${() => lineBinder.removeItem()}
+                 @click=${() => lineBinder.removeSelf()}
                 >
                  <iron-icon slot="prefix" icon="vaadin:trash"></iron-icon>
                 </vaadin-button>
